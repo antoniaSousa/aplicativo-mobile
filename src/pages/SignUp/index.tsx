@@ -37,8 +37,7 @@ const SignUp: React.FC = () =>{
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput> (null);
 
-  const handleSignUp = useCallback (async (data: object)=> {
-  //   console.log(data);
+  const handleSignUp = useCallback (async (data: SignUpFormData)=> {
     try {
         formRef.current?.setErrors({});
 
@@ -49,11 +48,11 @@ const SignUp: React.FC = () =>{
             password: Yup.string().min(6, 'Mínimo 6 dígitos'),
         });
 
-        console.log(data);
-        await api.post('/users', data);
         await schema.validate(data, {
           abortEarly: false,
         });
+  
+        await api.post('/users', data);
 
         Alert.alert('Cadastro realizado com sucesso!', 'Você já pode fazer login na aplicação');
 
