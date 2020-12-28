@@ -2,22 +2,28 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import Dashboard from '../pages/Dashboard';
+import Profile from '../pages/Profile';
+import CreateAppointment from '../pages/CreateAppointment';
+import AppointmentCreate from '../pages/AppointmentCreate';
 
 
 const App = createStackNavigator();
 
-const AuthRoutes: React.FC = () => (
+const AppRoutes: React.FC = () => (
     <App.Navigator
         screenOptions={{
-            // headerShown: false,
+            headerShown: false,
             headerTitle: 'Gobarber',
             cardStyle: { backgroundColor: '#312e38'},
         }}
-        // initialRouteName="SignUp"
+        //  initialRouteName="SignUp"
      >
-        <App.Screen name="SignIn" component={Dashboard}/>
+        <App.Screen name="Dashboard" component={Dashboard}/>
+        <App.Screen name="CreateAppointment" component={CreateAppointment}/>
+        <App.Screen name="AppointmentCreate" component={AppointmentCreate}/>
+        <App.Screen name="Profile" component={Profile}/>
 
     </App.Navigator>
 );
 
-export default AuthRoutes;
+export default AppRoutes;

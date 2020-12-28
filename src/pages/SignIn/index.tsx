@@ -38,11 +38,10 @@ import { Container, Title, ForgotPassword, ForgotPassworText,
 
   const {signIn, user} = useAuth();
 
-   console.log(user);
   const handleSignIn = useCallback (async (data: SignInFormData)=> {
-    try {
-        formRef.current?.setErrors({});
 
+     try {
+       formRef.current?.setErrors({});
         const schema = Yup.object().shape({
             email: Yup.string().required('E-mail obrigatório')
             .email('Digite um e-mail válido'),
@@ -55,17 +54,18 @@ import { Container, Title, ForgotPassword, ForgotPassworText,
             email: data.email,
             password: data.password,
         });
-    }catch (err){
+      }catch (err){
 
        if (err instanceof Yup.ValidationError){
            const errors = getValidationErros(err);
+           console.log(errors);
 
            formRef.current?.setErrors(errors);
            return;
        }
 
        Alert.alert(' Erro na autenticação ',
-       'Ocorreu um erro ao fazer login, cheque as credenciais.'
+       'Ocorreu um erro ao fazer login cheque as credenciais.'
        );
       }
 
@@ -84,7 +84,7 @@ import { Container, Title, ForgotPassword, ForgotPassworText,
     <View>
     <Title>Faça seu logon</Title>
     </View>
-   <Form ref={formRef}onSubmit={handleSignIn}>
+   <Form ref={formRef} onSubmit={handleSignIn}>
     <Input
        autoCorrect={false}
        autoCapitalize="none"
@@ -93,6 +93,9 @@ import { Container, Title, ForgotPassword, ForgotPassworText,
        icon="mail"
        placeholder="E-mail"
        returnKeyType="next"
+       onSubmitEditing={()=>{
+         passwordInputRef.current?.focus();
+       }}
        />
 
        <Input

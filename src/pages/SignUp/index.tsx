@@ -37,40 +37,44 @@ const SignUp: React.FC = () =>{
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput> (null);
 
-  const handleSignUp = useCallback (async (data: SignUpFormData)=> {
-    try {
-        formRef.current?.setErrors({});
 
-        const schema = Yup.object().shape({
-            name: Yup.string().required('Nome obrigatório'),
-            email: Yup.string().required('E-mail obrigatório')
-            .email('Digite um e-mail válido'),
-            password: Yup.string().min(6, 'Mínimo 6 dígitos'),
-        });
+  const handleSignUp = useCallback(
+    async(data: SignUpFormData)=> {
+      try {
+      formRef.current?.setErrors({});
 
-        await schema.validate(data, {
-          abortEarly: false,
-        });
-  
-        await api.post('/users', data);
+      const schema = Yup.object().shape({
+        name: Yup.string().required('Nome obrigatório'),
+        email: Yup.string().required('E-mail obrigatório')
+        .email('Digite um e-mail válido'),
+        password: Yup.string().min(6, 'Mínimo 6 dígitos'),
+      });
 
-        Alert.alert('Cadastro realizado com sucesso!', 'Você já pode fazer login na aplicação');
+      await schema.validate(data, {
+        abortEarly: false,
+      });
+      await api.post('/users', data);
 
-        navigation.navigate('SignIn');
+      Alert.alert('Cadastro realizado com sucesso!',
+      'Você já pode fazer login na aplicação');
+
+      navigation.goBack();
 
     }catch (err){
 
-
         if (err instanceof Yup.ValidationError){
-            const errors = getValidationErros(err);
+          const errors = getValidationErros(err);
 
-            formRef.current?.setErrors(errors);
-            return;
+          formRef.current?.setErrors(errors);
+       
+          return;
 
         }
 
-        Alert.alert('Erro no cadstro','Ocorreu um erro ao fazer o cadastro, tente novamente.');
-    }
+        Alert.alert('Erro no cadstro',
+        'Ocorreu um erro ao fazer o cadastro, tente novamente.'
+        );
+      }
     }, [navigation],);
 
   return (
@@ -91,7 +95,6 @@ const SignUp: React.FC = () =>{
 
     <Form
     ref={formRef} onSubmit={handleSignUp}>
-
     <Input
     ref={emailInputRef}
     autoCapitalize="words"
@@ -109,7 +112,7 @@ const SignUp: React.FC = () =>{
     keyboardType="email-address"
     autoCorrect={false}
     autoCapitalize="none"
-    name=" email"
+    name="email"
     icon="mail"
     placeholder="E-mail"
     returnKeyType="next"
@@ -137,7 +140,7 @@ const SignUp: React.FC = () =>{
   </ScrollView>
   </KeyboardAvoidingView>
 
-  <BackToSignIn onPress={()=> navigation.goBack()}>
+  <BackToSignIn onPress={() => navigation.goBack()}>
     <Icon name="arrow-left" size={20} color="#ffff" ></Icon>
     <BackToSignInText>Voltar para o logon</BackToSignInText>
     </BackToSignIn>
